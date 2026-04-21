@@ -3,191 +3,62 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Тренажёр званий ВС РФ</title>
-        <style>
-            :root {
-                --bg-color: #002333;
-                --card-bg: #deefe7;
-                --primary: #ffffff;
-                --accent: #159a9c;
-                --text-secondary: #b4bec9;
-                --radius: 20px;
-            }
-
-            body {
-                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-                background-color: var(--bg-color);
-                color: var(--primary);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                margin: 0;
-            }
-
-            #timer {
-                font-size: 18px;
-                font-weight: 600;
-                color: var(--accent);
-                margin-bottom: 15px;
-                background: rgba(255, 255, 255, 0.1);
-                padding: 5px 20px;
-                border-radius: var(--radius);
-            }
-
-            .container {
-                background-color: var(--card-bg);
-                padding: 25px;
-                border-radius: var(--radius);
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-                width: 100%;
-                max-width: 400px;
-                text-align: center;
-            }
-
-            .menu-btns {
-                display: flex;
-                gap: 10px;
-                margin-bottom: 20px;
-            }
-
-            button {
-                flex: 1;
-                padding: 12px;
-                border: none;
-                border-radius: var(--radius);
-                cursor: pointer;
-                font-weight: 600;
-                transition: all 0.3s;
-            }
-
-            .btn-mode {
-                background-color: var(--text-secondary);
-                color: white;
-            }
-
-            .btn-mode.active {
-                background-color: var(--accent);
-            }
-
-            .rank-card {
-                margin: 20px 0;
-            }
-
-            .pogon-img {
-                width: 120px;
-                height: auto;
-                margin-bottom: 20px;
-                border-radius: 10px;
-                background: #f0f0f0;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            input[type="text"] {
-                width: 100%;
-                padding: 15px;
-                box-sizing: border-box;
-                border: 2px solid var(--bg-color);
-                border-radius: var(--radius);
-                margin-bottom: 15px;
-                outline: none;
-                font-size: 16px;
-                transition: border-color 0.3s;
-                color: #002333;
-            }
-
-            input[type="text"]:focus {
-                border-color: var(--accent);
-            }
-
-            .submit-btn {
-                background-color: var(--accent);
-                color: white;
-                width: 100%;
-                font-size: 16px;
-            }
-
-            .start-screen-btn {
-                background-color: var(--002333);
-                background-color: #002333;
-                color: white;
-                padding: 20px;
-                font-size: 18px;
-            }
-
-            .feedback {
-                margin-top: 15px;
-                font-weight: bold;
-                min-height: 24px;
-            }
-
-            .stats {
-                margin-top: 20px;
-                font-size: 14px;
-                color: var(--text-secondary);
-            }
-
-            .hidden {
-                display: none;
-            }
-
-            /* Мобильная адаптация */
-            @media (max-width: 480px) {
-                body {
-                    padding: 10px;
-                    /* Предотвращаем зум при фокусе на инпутах в iOS */
-                    font-size: 16px;
-                }
-
-                .container {
-                    padding: 15px;
-                    width: 90%;
-                    max-width: none;
-                }
-
-                .pogon-img {
-                    width: 80%; /* Чуть меньше для мелких экранов */
-                }
-
-                input[type="text"] {
-                    padding: 12px;
-                    font-size: 16px; /* Важно: минимум 16px, чтобы iPhone не "зумил" экран автоматически */
-                }
-
-                button {
-                    padding: 10px;
-                    font-weight: 300;
-                    font-size: 20px;
-                }
-
-                .submit-btn {
-                    font-size: 25px;
-                }
-
-                #timer {
-                    font-size: 32px;
-                }
-
-                #enterHint {
-                    visibility: hidden;
-                }
-            }
-        </style>
+        <title>Military Trainer</title>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <div id="timer">00:00</div>
+        <button class="burger-btn" id="burger-trigger" onclick="toggleMenu()">
+            <img src="img/burger-bar.png" alt="burger bar" />
+        </button>
 
-        <div class="container">
+        <div id="side-menu" class="side-menu">
+            <div class="menu-content">
+                <div class="menu-header"></div>
+                <button class="menu-item" onclick="selectCategoryMenu('ranks')">
+                    Погоны
+                </button>
+                <button
+                    class="menu-item"
+                    onclick="selectCategoryMenu('emblems')"
+                >
+                    Эмблемы
+                </button>
+                <button class="menu-item highlight" onclick="showHints()">
+                    База знаний
+                </button>
+            </div>
+        </div>
+
+        <div id="timer" style="font-size: 40px">00:00</div>
+
+        <div class="container" id="main-container">
+            <div class="category-btns">
+                <button
+                    id="cat-ranks"
+                    class="btn-category active"
+                    onclick="setCategory('ranks')"
+                >
+                    Погоны
+                </button>
+                <button
+                    id="cat-emblems"
+                    class="btn-category"
+                    onclick="setCategory('emblems')"
+                >
+                    Эмблемы
+                </button>
+                <button class="btn-category desktop-hint" onclick="showHints()">
+                    Подсказки
+                </button>
+            </div>
+
             <div class="menu-btns">
                 <button
                     id="trainMode"
                     class="btn-mode active"
                     onclick="setMode('train')"
                 >
-                    Тренировка
+                    Учения
                 </button>
                 <button
                     id="examMode"
@@ -199,18 +70,10 @@
             </div>
 
             <div id="start-zone">
-                <button
-                    class="submit-btn start-screen-btn"
-                    onclick="startGame()"
-                >
-                    Начать тест
+                <button class="submit-btn start-op" onclick="startGame()">
+                    Начать операцию
                 </button>
-                <p
-                    id="enterHint"
-                    style="color: #002333; font-size: 12px; margin-top: 10px"
-                >
-                    (или нажмите Enter)
-                </p>
+                <p id="enterHint" class="enter-info">Enter — подтверждение</p>
             </div>
 
             <div id="game-zone" class="hidden">
@@ -218,7 +81,7 @@
                     <img
                         id="pogon-display"
                         src=""
-                        alt="Погон"
+                        alt="Target"
                         class="pogon-img"
                     />
                     <input
@@ -232,7 +95,7 @@
                         class="submit-btn"
                         onclick="checkAnswer()"
                     >
-                        Проверить
+                        Подтвердить
                     </button>
                 </div>
                 <div id="feedback" class="feedback"></div>
@@ -240,208 +103,15 @@
             </div>
         </div>
 
-        <div>
-            <a
-                style="
-                    text-decoration: none;
-                    color: var(--accent);
-                    font-size: 12px;
-                    margin-top: 10px;
-                "
-                href="https://vk.ru/f_x_f_x"
-                ><p>Обратная связь</p></a
-            >
+        <div id="hints-container" class="container hidden hints-wide">
+            <button class="back-btn" onclick="closeHints()">Назад</button>
+            <div id="hints-content"></div>
         </div>
-        <script>
-            const ranks = [
-                { name: "Рядовой", img: "img/0.jpg" },
-                { name: "Ефрейтор", img: "img/1.jpg" },
-                { name: "Младший сержант", img: "img/2.jpg" },
-                { name: "Сержант", img: "img/3.jpg" },
-                { name: "Старший сержант", img: "img/4.jpg" },
-                { name: "Старшина", img: "img/5.jpg" },
-                { name: "Прапорщик", img: "img/6.jpg" },
-                { name: "Старший прапорщик", img: "img/7.jpg" },
-                { name: "Младший лейтенант", img: "img/8.jpg" },
-                { name: "Лейтенант", img: "img/9.jpg" },
-                { name: "Старший лейтенант", img: "img/10.jpg" },
-                { name: "Капитан", img: "img/11.jpg" },
-                { name: "Майор", img: "img/12.jpg" },
-                { name: "Подполковник", img: "img/13.jpg" },
-                { name: "Полковник", img: "img/14.jpg" },
-                { name: "Генерал майор", img: "img/15.jpg" },
-                { name: "Генерал лейтенант", img: "img/16.jpg" },
-                { name: "Генерал полковник", img: "img/17.jpg" },
-                { name: "Генерал армии", img: "img/18.jpg" },
-                { name: "Маршал", img: "img/19.jpg" },
-            ];
 
-            let currentMode = "train";
-            let currentIndex = 0;
-            let score = 0;
-            let examList = [];
-            let isFirstAttempt = true;
-            let isGameActive = false;
+        <footer class="footer" style="margin-top: 20px">
+            <a id="contact-link" href="https://vk.ru/f_x_f_x">Обратная связь</a>
+        </footer>
 
-            let timerInterval;
-            let seconds = 0;
-
-            const startZone = document.getElementById("start-zone");
-            const gameZone = document.getElementById("game-zone");
-            const input = document.getElementById("answer-input");
-            const feedback = document.getElementById("feedback");
-            const stats = document.getElementById("stats");
-            const imgDisplay = document.getElementById("pogon-display");
-            const timerDisplay = document.getElementById("timer");
-
-            function normalize(text) {
-                return text
-                    .toLowerCase()
-                    .trim()
-                    .replace(/мл\./g, "младший")
-                    .replace(/ст\./g, "старший")
-                    .replace(/ген\./g, "генерал")
-                    .split(/\s+/)
-                    .map((word) => {
-                        if (word === "мл") return "младший";
-                        if (word === "ст") return "старший";
-                        if (word === "ген") return "генерал";
-                        return word;
-                    })
-                    .join("")
-                    .replace(/\s+/g, "");
-            }
-
-            function startTimer() {
-                clearInterval(timerInterval);
-                seconds = 0;
-                timerDisplay.innerText = "00:00";
-                timerInterval = setInterval(() => {
-                    seconds++;
-                    let mins = Math.floor(seconds / 60);
-                    let secs = seconds % 60;
-                    timerDisplay.innerText =
-                        (mins < 10 ? "0" + mins : mins) +
-                        ":" +
-                        (secs < 10 ? "0" + secs : secs);
-                }, 1000);
-            }
-
-            function setMode(mode) {
-                currentMode = mode;
-                document
-                    .getElementById("trainMode")
-                    .classList.toggle("active", mode === "train");
-                document
-                    .getElementById("examMode")
-                    .classList.toggle("active", mode === "exam");
-                resetToStart();
-            }
-
-            function resetToStart() {
-                isGameActive = false;
-                clearInterval(timerInterval);
-                timerDisplay.innerText = "00:00";
-                startZone.classList.remove("hidden");
-                gameZone.classList.add("hidden");
-                feedback.innerText = "";
-            }
-
-            function startGame() {
-                isGameActive = true;
-                score = 0;
-                currentIndex = 0;
-                isFirstAttempt = true;
-
-                startZone.classList.add("hidden");
-                gameZone.classList.remove("hidden");
-
-                input.value = "";
-                feedback.innerText = "";
-
-                if (currentMode === "exam") {
-                    examList = [...ranks].sort(() => Math.random() - 0.5);
-                } else {
-                    examList = [...ranks];
-                }
-
-                updateCard();
-                startTimer();
-                setTimeout(() => input.focus(), 10);
-            }
-
-            function updateCard() {
-                if (currentIndex < examList.length) {
-                    imgDisplay.src = examList[currentIndex].img;
-                    stats.innerText = `Вопрос ${currentIndex + 1} из ${examList.length}`;
-                    isFirstAttempt = true;
-                } else {
-                    finishGame();
-                }
-            }
-
-            function checkAnswer() {
-                const userAns = normalize(input.value);
-                const correctAns = normalize(examList[currentIndex].name);
-
-                if (userAns === correctAns) {
-                    if (isFirstAttempt) score++;
-                    feedback.style.color = "#159A9C";
-                    feedback.innerText = "Правильно!";
-                    nextQuestion();
-                } else {
-                    feedback.style.color = "#d9534f";
-                    isFirstAttempt = false;
-
-                    if (currentMode === "train") {
-                        feedback.innerText = "Неверно, попробуй еще раз";
-                        input.value = "";
-                    } else {
-                        feedback.innerText = "Неверно";
-                        setTimeout(nextQuestion, 600);
-                    }
-                }
-            }
-
-            function nextQuestion() {
-                currentIndex++;
-                input.value = "";
-                feedback.innerText = "";
-                updateCard();
-                input.focus();
-            }
-
-            function finishGame() {
-                isGameActive = false;
-                clearInterval(timerInterval);
-                gameZone.classList.add("hidden");
-                startZone.classList.remove("hidden");
-
-                // Обновляем содержимое стартовой зоны
-                startZone.innerHTML = `
-                    <div style="color: #002333; margin-bottom: 20px;">
-                        <h2 style="margin: 0;">Готово!</h2>
-                        <p>Результат: ${score} из ${examList.length}</p>
-                        <p>Время: ${timerDisplay.innerText}</p>
-                    </div>
-                    <button class="submit-btn start-screen-btn" onclick="startGame()">Начать заново</button>
-                    <p id="enterHint" style="color: #002333; font-size: 12px; margin-top: 10px;">(или нажмите Enter)</p>
-                `;
-            }
-
-            // Глобальный слушатель Enter
-            document.addEventListener("keypress", (event) => {
-                if (event.key === "Enter") {
-                    if (!isGameActive) {
-                        startGame();
-                    } else {
-                        checkAnswer();
-                    }
-                }
-            });
-
-            // Инициализация при загрузке
-            resetToStart();
-        </script>
+        <script src="script.js"></script>
     </body>
 </html>
