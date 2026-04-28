@@ -59,10 +59,17 @@ const timerDisplay = document.getElementById("timer");
 const contactLink = document.getElementById("contact-link");
 
 function normalize(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^а-яё0-9]/g, ""); // Удаляем всё кроме букв и цифр для легкого сравнения
+  let lowText = text.toLowerCase().trim();
+  const replacements = {
+    "мл": "младший",
+    "ст": "старший",
+    "ген": "генерал",
+  };
+  let words = lowText.split(/\s+/);
+  let processedWords = words.map(word => replacements[word] || word);
+  lowText = processedWords.join("");
+
+  return lowText.replace(/[^а-яё0-9]/g, "");
 }
 
 function setCategory(cat) {
