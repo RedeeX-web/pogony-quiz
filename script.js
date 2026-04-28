@@ -211,6 +211,8 @@ function selectCategoryMenu(cat) {
 }
 
 function showHints() {
+isGameActive = false;
+clearInterval(timerInterval);
   const main = document.getElementById("main-container");
   const hints = document.getElementById("hints-container");
   const content = document.getElementById("hints-content");
@@ -240,10 +242,12 @@ function showHints() {
 }
 
 function closeHints() {
+
   document.getElementById("hints-container").classList.add("hidden");
   document.getElementById("main-container").classList.remove("hidden");
   timerDisplay.classList.remove("hidden");
   contactLink.classList.remove("hidden");
+resetToStart();
 }
 
 resetToStart();
